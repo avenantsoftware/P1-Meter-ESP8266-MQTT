@@ -1,5 +1,5 @@
 # P1-Meter-ESP8266
-Software for the ESP2866 that sends P1 smart meter data to to MQTT.
+Software for the ESP2866 that sends P1 smart meter data to to MQTT on a configurable topic with json. Easy to consume with Pimatic, Telegraf or other software that supports MQTT.
 
 ### Installation instrucions
 - Make sure that your ESP8266 can be flashed from the Arduino environnment: https://github.com/esp8266/Arduino
@@ -7,7 +7,7 @@ Software for the ESP2866 that sends P1 smart meter data to to MQTT.
 - Install the pubsub library from: https://github.com/knolleary/pubsubclient
 - Edit pubsubclient.h to set the MQTT MAX MESSAGE SIZE to 256
 - Place all files from this repository in a directory. Open the .ino file.
-- Adjust WIFI, Domoticz and debug settings at the top of the file
+- Adjust WIFI, MQTT and debug settings at the top of the file
 - Compile and flash as usual
 
 ### Connection of the P1 meter to the ESP8266

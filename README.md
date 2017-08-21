@@ -11,7 +11,7 @@ Software for the ESP8266 that sends P1 smart meter data to to MQTT on a configur
 - Compile and flash as usual
 
 ### Connection of the P1 meter to the ESP8266
-You need to connect the smart meter with a RJ11 connector. This is the pinout to use
+You need to connect the smart meter with a RJ12 connector. This is the pinout to use
 ![RJ11 P1 connetor](http://gejanssen.com/howto/Slimme-meter-uitlezen/RJ11-pinout.png)
 
 Connect GND->GND on ESP, RTS->3.3V on ESP and RxD->any digital pin on ESP with a 10k ohm pull up resistor placed between the RTS/3.3v connection and the data connection. In this sketch I use D5 for the serial communication with the smartmeter.

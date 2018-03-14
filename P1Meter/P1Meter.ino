@@ -14,7 +14,7 @@
 //your settings, change accordingly
 #define SERIAL_RX D5 // pin for SoftwareSerial RX
 
-const char *ssid = "neofoto.nl";
+const char *ssid = "wifinetwork";
 const char *password = "wifipassword";
 const char *hostName = "nodemcu-p1";
 const char *mqttServer = "192.168.2.35";

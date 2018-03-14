@@ -104,6 +104,11 @@ void loop()
   client.loop();
 
   readTelegram();
+  
+   if (millis() > 600000) {
+    ESP.restart();
+  }
+  
   ArduinoOTA.handle();
 }
 

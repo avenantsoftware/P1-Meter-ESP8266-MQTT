@@ -20,10 +20,12 @@ const char *hostName = "nodemcu-p1";
 const char *mqttServer = "192.168.2.35";
 const char *mqttClientName = "nodemcu-p1";
 const char *mqttP1Topic = "/energy/p1";
+const char *mqttLogTopic = "/log/p1";
 const int mqttPort = 1883;
 
 //useful for debugging, outputs info to serial port
-const bool outputOnSerial = true;
+const bool outputOnSerial = false;
+const bool outputMqttLog = false;
 
 // Vars to store meter readings
 long powerConsumptionLowTariff = 0;  //Meter reading Electrics - consumption low tariff in watt hours
@@ -287,23 +289,46 @@ bool CheckData()
     firstRun = false;
     return true;
   }
-  if (powerConsumptionLowTariff - OldPowerConsumptionLowTariff > 70)
+
+  if (outputMqttLog)
+  {
+    char msgpub[768];
+    char output[768];
+    String msg = "{";
+    msg.concat("\"powerConsumptionLowTariff\": %lu,");
+    msg.concat("\"powerConsumptionHighTariff\": %lu,");
+    msg.concat("\"powerProductionLowTariff\": %lu,");
+    msg.concat("\"powerProductionHighTariff\": %lu,");
+    msg.concat("\"CurrentPowerConsumption\": %lu,");
+    msg.concat("\"CurrentPowerProduction\": %lu,");
+    msg.concat("\"GasConsumption\": %lu,");
+    msg.concat("\"OldPowerConsumptionLowTariff\": %lu,");
+    msg.concat("\"OldPowerConsumptionHighTariff\": %lu,");
+    msg.concat("\"OldPowerProductionLowTariff\": %lu,");
+    msg.concat("\"OldPowerProductionHighTariff\": %lu,");
+    msg.concat("\"OldGasConsumption\": %lu");
+    msg.concat("}");
+    msg.toCharArray(msgpub, 768);
+    sprintf(output, msgpub, powerConsumptionLowTariff, powerConsumptionHighTariff, powerProductionLowTariff, powerProductionHighTariff, CurrentPowerConsumption, CurrentPowerProduction, GasConsumption, OldPowerConsumptionLowTariff, OldPowerConsumptionHighTariff, OldPowerProductionLowTariff, OldPowerProductionHighTariff, OldGasConsumption);
+    client.publish(mqttLogTopic, output);
+  }
+  if ((powerConsumptionLowTariff - OldPowerConsumptionLowTariff > 70) || powerConsumptionLowTariff < 0)
   {
     return false;
   }
-  if (powerConsumptionHighTariff - OldPowerConsumptionHighTariff > 70)
+  if ((powerConsumptionHighTariff - OldPowerConsumptionHighTariff > 70) || powerConsumptionHighTariff < 0)
   {
     return false;
   }
-  if (powerProductionLowTariff - OldPowerProductionLowTariff > 70)
+  if ((powerProductionLowTariff - OldPowerProductionLowTariff > 70) || powerProductionLowTariff < 0)
   {
     return false;
   }
-  if (powerProductionHighTariff - OldPowerProductionHighTariff > 70)
+  if ((powerProductionHighTariff - OldPowerProductionHighTariff > 70) || powerProductionHighTariff < 0)
   {
     return false;
   }
-  if (GasConsumption - OldGasConsumption > 1)
+  if ((GasConsumption - OldGasConsumption > 1) || GasConsumption < 0)
   {
     return false;
   }

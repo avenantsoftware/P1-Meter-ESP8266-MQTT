@@ -19,6 +19,8 @@ const char *password = "wifipassword";
 const char *hostName = "nodemcu-p1";
 const char *mqttServer = "192.168.2.35";
 const char *mqttClientName = "nodemcu-p1";
+const char *mqttName ="login";
+const char *mqttPassword = "password";
 const char *mqttP1Topic = "/energy/p1";
 const char *mqttLogTopic = "/log/p1";
 const int mqttPort = 1883;
@@ -118,7 +120,7 @@ void reconnect()
   while (!client.connected())
   {
     Serial.print("Attempting MQTT connection...");
-    if (client.connect(mqttClientName))
+    if (client.connect(mqttClientName,mqttName,mqttPassword))
     {
       Serial.println("connected");
     }

@@ -319,29 +319,32 @@ bool CheckData()
     sprintf(output, msgpub, powerConsumptionLowTariff, powerConsumptionHighTariff, powerProductionLowTariff, powerProductionHighTariff, CurrentPowerConsumption, CurrentPowerProduction, GasConsumption, OldPowerConsumptionLowTariff, OldPowerConsumptionHighTariff, OldPowerProductionLowTariff, OldPowerProductionHighTariff, OldGasConsumption);
     client.publish(mqttLogTopic, output);
   }
-  if ((powerConsumptionLowTariff - OldPowerConsumptionLowTariff > 70) || powerConsumptionLowTariff < 0)
+  if (
+      (powerConsumptionLowTariff < 0) || 
+      (powerConsumptionHighTariff < 0) || 
+      (powerProductionLowTariff < 0) || 
+      (powerProductionHighTariff < 0) || 
+      (GasConsumption < 0)
+     )
   {
+    // return false als er negatieve waardes zijn
     return false;
   }
-  if ((powerConsumptionHighTariff - OldPowerConsumptionHighTariff > 70) || powerConsumptionHighTariff < 0)
+  if (
+      (abs(powerConsumptionLowTariff - OldPowerConsumptionLowTariff) > 50) || 
+      (abs(powerConsumptionHighTariff - OldPowerConsumptionHighTariff) > 50) || 
+      (abs(powerProductionLowTariff - OldPowerProductionLowTariff) > 50) || 
+      (abs(powerProductionHighTariff - OldPowerProductionHighTariff) > 50) || 
+      (abs(GasConsumption - OldGasConsumption) > 1)
+     )
   {
-    return false;
-  }
-  if ((powerProductionLowTariff - OldPowerProductionLowTariff > 70) || powerProductionLowTariff < 0)
-  {
-    return false;
-  }
-  if ((powerProductionHighTariff - OldPowerProductionHighTariff > 70) || powerProductionHighTariff < 0)
-  {
-    return false;
-  }
-  if ((GasConsumption - OldGasConsumption > 1) || GasConsumption < 0)
-  {
-    return false;
+    // er is een wijziging, dan een update versturen
+      SetOldValues();
+      return true;
   }
 
-  SetOldValues();
-  return true;
+  // geen wijziging
+  return false;
 }
 
 void SetOldValues()

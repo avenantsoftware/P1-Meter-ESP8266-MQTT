@@ -15,3 +15,43 @@ You need to connect the smart meter with a RJ12 connector. This is the pinout to
 ![RJ11 P1 connetor](http://gejanssen.com/howto/Slimme-meter-uitlezen/RJ11-pinout.png)
 
 Connect GND->GND on ESP, RTS->3.3V on ESP and RxD->any digital pin on ESP with a 10k ohm pull up resistor placed between the RTS/3.3v connection and the data connection. In this sketch I use D5 for the serial communication with the smartmeter.
+
+### Connecting to HomeAssistant (HASS)
+In sensors.yaml
+<pre>
+- name: Tariff Low
+  platform: mqtt
+  state_topic: energy/p1
+  value_template: "{{ (value_json.powerConsumptionLowTariff|float/1000) }}"
+  unit_of_measurement: kWh
+
+- name: Tariff High
+  platform: mqtt
+  state_topic: energy/p1
+  value_template: "{{ (value_json.powerConsumptionHighTariff|float/1000) }}"
+  unit_of_measurement: kWh
+  
+- name: Total
+  platform: mqtt
+  state_topic: energy/p1
+  value_template: "{{ (((value_json.powerConsumptionLowTariff|float)+(value_json.powerConsumptionHighTariff|float))/1000) }}"
+  unit_of_measurement: kWh
+
+- name: Total2
+  platform: mqtt
+  state_topic: energy/p1
+  value_template: "{{ (((value_json.powerConsumptionLowTariff|float)+(value_json.powerConsumptionHighTariff|float))/1000)|round(0) }}"
+  unit_of_measurement: kWh
+
+- name: Power Usage
+  platform: mqtt
+  state_topic: energy/p1
+  value_template: "{{ ((value_json.CurrentPowerConsumption|float)|round(0)) }}"
+  unit_of_measurement: W
+
+- name: Gas
+  platform: mqtt
+  state_topic: energy/p1
+  value_template: "{{ (value_json.GasConsumption|float/1000) }}"
+  unit_of_measurement: m³
+  </pre>

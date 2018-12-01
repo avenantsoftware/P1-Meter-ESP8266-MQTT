@@ -63,7 +63,7 @@ In sensors.yaml
   unit_of_measurement: m³
   </pre>
 
-Some examples making sensors to calculate values:
+Some examples making sensors to calculate values, when your old meter was replaced or when a new year starts change + to - to subtract begin meter values:
 <pre>
 - name: Total Power Consumption
   platform: mqtt

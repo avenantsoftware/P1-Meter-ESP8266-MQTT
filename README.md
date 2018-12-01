@@ -17,11 +17,11 @@ You need to connect the smart meter with a RJ12 connector. This is the pinout to
 Connect GND->GND on ESP, RTS->3.3V on ESP and RxD->any digital pin on ESP with a 10k ohm pull up resistor placed between the RTS/3.3v connection and the data connection. In this sketch I use D5 for the serial communication with the smartmeter.
 
 ### Powering NodeMCU from P1 port (ESMR 5.0)
-pin 1 = VCC
-pin 6 = GND
+pin 1 = VCC  
+pin 6 = GND  
 
-connect pin 1 -> Vin on NodeMCU (bottom left)
-connect pin 6 -> GND on NodeMCU (bottom left)
+connect pin 1 -> Vin on NodeMCU (bottom left)  
+connect pin 6 -> GND on NodeMCU (bottom left)  
 
 ### Connecting to HomeAssistant (HASS)
 In sensors.yaml

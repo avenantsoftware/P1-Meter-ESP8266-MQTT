@@ -76,7 +76,9 @@ Some examples making sensors to calculate values:
   state_topic: energy/p1
   value_template: "{{ ((value_json.GasConsumption|float/1000)|round(0)) + 121 }}"
   unit_of_measurement: m³
-  
+ </pre>
+ Another example:
+ <pre>
  - name: Power Usage
   platform: mqtt
   state_topic: energy/p1
